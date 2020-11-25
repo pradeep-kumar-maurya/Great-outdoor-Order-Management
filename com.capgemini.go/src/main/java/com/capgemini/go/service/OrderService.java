@@ -2,6 +2,7 @@ package com.capgemini.go.service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,7 +31,7 @@ public class OrderService implements IOrderService{
 	private OrderProductMapRepository orderProductMapRepository;
 	@Autowired
 	private OrdersRepository ordersRepository;
-	
+
 
 	/*
 	 * Function Name : createNewOrder 
@@ -38,7 +39,7 @@ public class OrderService implements IOrderService{
 	 * Return Type : String
 	 * Description : to create order
 	 */
-	
+
 	@Override
 	public String createNewOrder(Orders orders) {
 		if(validateOrder(orders)) {
@@ -50,7 +51,7 @@ public class OrderService implements IOrderService{
 			c.add(Calendar.DATE, 2);
 			orders.setOrderDispatchTime(c.getTime());
 			List<Cart> products = cartRepository.getProductsByUserId(orders.getUserId());
-			List<OrderProductMap> orderProductList = new ArrayList<>();
+			List<OrderProductMap> orderProductMapList = new ArrayList<>();
 			for(Cart cart : products) {
 				OrderProductMap map = new OrderProductMap();
 				map.setOrderId(orderId);
@@ -58,25 +59,70 @@ public class OrderService implements IOrderService{
 				map.setProductStatus(1);
 				map.setGiftStatus(1);
 				orderProductMapRepository.save(map);
-				orderProductList.add(map);
+				orderProductMapList.add(map);
 				//cartRepository.deleteByUserIdAndProductId(orders.getUserId(),cart.getProductId());
 			}
-			orders.setProducts(orderProductList);
+			orders.setProducts(orderProductMapList);
 			ordersRepository.save(orders);
 			return "order placed successfully";
 		}
 		else {
 			return "sorry, order was not placed";
 		}
-
 	}
 
+
+	/*
+	 * Function Name : findOrdersByUserId 
+	 * Input Parameters :  userId
+	 * Return Type : List<Orders>
+	 * Description : to show the list of orders according to user
+	 */
+
+	@Override
+	public List<Orders> findOrdersByUserId(String userId){
+		List<Orders> orders = new ArrayList<>();
+		/*
+		 * Validating userId
+		 */
+		if(userId == null || userId.isEmpty()) {
+			return Collections.emptyList();
+		}
+		else {
+			orders = ordersRepository.findUserById(userId);
+			for(Orders order : orders) {
+				List<OrderProductMap> products = orderProductMapRepository.getOrderProductMapByOrderId(order.getOrderId());
+				order.setProducts(products);
+			}
+			return orders;
+		}
+	}
+	
 	 /* 
+	 * Function Name : cancelOrder 
+	 * Input Parameters :  orderId
+	 * Return Type : String 
+	 * Description : to delete order
+	 */
+
+	@Override
+	public String cancelOrder(String orderId) {
+		if (orderId == null || orderId.isEmpty()) {
+			return "sorry, order was not cancelled";
+		}
+		else {
+			ordersRepository.deleteByOrderId(orderId);
+			orderProductMapRepository.deleteByOrderId(orderId);
+			return "order was deleted successfully";
+		} 
+	}
+
+	/* 
 	 * Function Name : validateOrder 
-   	 * Input Parameters :  Orders
-   	 * Return Type : Boolean 
-   	 * Description : to validate order
-   	 */
+	 * Input Parameters :  Orders
+	 * Return Type : Boolean 
+	 * Description : to validate order
+	 */
 	private boolean validateOrder(Orders orders) {
 		if (orders.getAddressId() == null || orders.getAddressId().isEmpty()) {
 			return false;
