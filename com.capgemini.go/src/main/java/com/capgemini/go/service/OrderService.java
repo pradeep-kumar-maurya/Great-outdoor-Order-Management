@@ -15,9 +15,11 @@ import com.capgemini.go.dao.CartRepository;
 import com.capgemini.go.dao.CustomerRepository;
 import com.capgemini.go.dao.OrderProductMapRepository;
 import com.capgemini.go.dao.OrdersRepository;
+import com.capgemini.go.dao.ProductRepository;
 import com.capgemini.go.dto.Cart;
 import com.capgemini.go.dto.OrderProductMap;
 import com.capgemini.go.dto.Orders;
+import com.capgemini.go.dto.Product;
 
 @Service
 @Transactional
@@ -31,7 +33,8 @@ public class OrderService implements IOrderService{
 	private OrderProductMapRepository orderProductMapRepository;
 	@Autowired
 	private OrdersRepository ordersRepository;
-
+	@Autowired
+	private ProductRepository productRepository;
 
 	/*
 	 * Function Name : createNewOrder 
@@ -54,17 +57,21 @@ public class OrderService implements IOrderService{
 			List<OrderProductMap> orderProductMapList = new ArrayList<>();
 			for(Cart cart : products) {
 				OrderProductMap map = new OrderProductMap();
+				Product product = productRepository.getProductByProductId(cart.getProductId());
 				map.setOrderId(orderId);
 				map.setProductId(cart.getProductId());
 				map.setProductStatus(1);
 				map.setGiftStatus(1);
+				map.setProducts(product);
 				orderProductMapRepository.save(map);
 				orderProductMapList.add(map);
 				//cartRepository.deleteByUserIdAndProductId(orders.getUserId(),cart.getProductId());
 			}
 			orders.setProducts(orderProductMapList);
+			System.out.println(orders);
 			ordersRepository.save(orders);
-			return "order placed successfully";
+			//return "order placed successfully";
+			return orderId;
 		}
 		else {
 			return "sorry, order was not placed";
@@ -81,6 +88,7 @@ public class OrderService implements IOrderService{
 
 	@Override
 	public List<Orders> findOrdersByUserId(String userId){
+		System.out.println(userId);
 		List<Orders> orders = new ArrayList<>();
 		/*
 		 * Validating userId
@@ -92,13 +100,17 @@ public class OrderService implements IOrderService{
 			orders = ordersRepository.findUserById(userId);
 			for(Orders order : orders) {
 				List<OrderProductMap> products = orderProductMapRepository.getOrderProductMapByOrderId(order.getOrderId());
+				for(OrderProductMap map : products) {
+					Product product = productRepository.getProductByProductId(map.getProductId());
+					map.setProducts(product);
+				}
 				order.setProducts(products);
 			}
 			return orders;
 		}
 	}
-	
-	 /* 
+
+	/* 
 	 * Function Name : cancelOrder 
 	 * Input Parameters :  orderId
 	 * Return Type : String 

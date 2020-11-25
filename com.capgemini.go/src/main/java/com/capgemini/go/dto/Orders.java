@@ -25,9 +25,9 @@ public class Orders {
     private String userId;
     private String addressId;
     private String orderDispatchStatus;
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date orderInitiateTime;
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date orderDispatchTime;
     @Transient
     private List<OrderProductMap> products;

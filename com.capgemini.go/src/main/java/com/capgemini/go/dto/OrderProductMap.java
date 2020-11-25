@@ -1,11 +1,14 @@
 package com.capgemini.go.dto;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "OrderProductMap")
@@ -19,19 +22,25 @@ public class OrderProductMap {
 	private String productId;
 	private int productStatus;
 	private int giftStatus;
+	@Transient
+	private Product product;
 	
 	public OrderProductMap() {
 		super();
 	}
 
-	public OrderProductMap(long id, String orderId, String productId, int productStatus, int giftStatus) {
+	public OrderProductMap(long id, String orderId, String productId, int productStatus, int giftStatus,
+			Product product) {
 		super();
 		this.id = id;
 		this.orderId = orderId;
 		this.productId = productId;
 		this.productStatus = productStatus;
 		this.giftStatus = giftStatus;
+		this.product = product;
 	}
+
+
 
 	public long getId() {
 		return id;
@@ -73,10 +82,17 @@ public class OrderProductMap {
 		this.giftStatus = giftStatus;
 	}
 
+	public Product getProducts() {
+		return product;
+	}
+
+	public void setProducts(Product product) {
+		this.product = product;
+	}
+
 	@Override
 	public String toString() {
 		return "OrderProductMap [id=" + id + ", orderId=" + orderId + ", productId=" + productId + ", productStatus="
-				+ productStatus + ", giftStatus=" + giftStatus + "]";
+				+ productStatus + ", giftStatus=" + giftStatus + ", products=" + product + "]";
 	}
-
 }

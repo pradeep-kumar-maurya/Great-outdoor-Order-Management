@@ -21,7 +21,7 @@ class ApplicationTests {
 	@Autowired
 	private IOrderService service;
 
-	//@Disabled
+	@Disabled
 	@Test
 	@Order(1)
 	void addOrder_1() {
@@ -65,7 +65,7 @@ class ApplicationTests {
 	@Order(4)
 	void findOrdersByUserId_1() {
 		List<Orders> orders = service.findOrdersByUserId("999-a1");
-		Assertions.assertEquals(1, orders.size());
+		Assertions.assertEquals(2, orders.size());
 	}
 	
 	@Disabled
