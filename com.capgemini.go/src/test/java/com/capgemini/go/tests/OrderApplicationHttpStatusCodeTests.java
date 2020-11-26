@@ -39,7 +39,14 @@ class OrderApplicationHttpStatusCodeTests {
 	void cancelOrder() throws Exception {
 		String string = "order was deleted successfully";
 		when(service.cancelOrder("")).thenReturn(string);
-		mockMvc.perform(MockMvcRequestBuilders.delete("http://localhost:4545/order/deleteProductFromOrder/555-bbb")).andDo(print()).andExpect(status().isOk());
+		mockMvc.perform(MockMvcRequestBuilders.delete("http://localhost:4545/order/deleteOrder/444")).andDo(print()).andExpect(status().isOk());
+	}
+	
+	@Test
+	void cancelProduct() throws Exception {
+		String string = "product was deleted successfully";
+		when(service.removeProduct("")).thenReturn(string);
+		mockMvc.perform(MockMvcRequestBuilders.delete("http://localhost:4545/order/deleteProductFromOrder/555")).andDo(print()).andExpect(status().isOk());
 	}
 
 	@Test
