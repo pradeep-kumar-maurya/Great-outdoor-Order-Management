@@ -22,4 +22,12 @@ public interface OrderProductMapRepository extends JpaRepository<OrderProductMap
 	@Query("delete from OrderProductMap orderProductMap where orderProductMap.orderId=?1")
 	public void deleteByOrderId(String orderId);
 
+	@Query("select orderProductMap from OrderProductMap orderProductMap where orderProductMap.productId=?1")
+	public OrderProductMap getProductByProductId(String productId);
+
+	@Transactional
+	@Modifying
+	@Query("delete from OrderProductMap orderProductMap where orderProductMap.productId=?1")
+	public void deleteProductByProductId(String productId);
+
 }

@@ -1,7 +1,5 @@
 package com.capgemini.go.dto;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,8 +27,8 @@ public class OrderProductMap {
 		super();
 	}
 
-	public OrderProductMap(long id, String orderId, String productId, int productStatus, int giftStatus,
-			Product product) {
+	public OrderProductMap(long id, String orderId, String productId, int productStatus,
+			int giftStatus, Product product) {
 		super();
 		this.id = id;
 		this.orderId = orderId;
@@ -39,8 +37,6 @@ public class OrderProductMap {
 		this.giftStatus = giftStatus;
 		this.product = product;
 	}
-
-
 
 	public long getId() {
 		return id;
@@ -82,17 +78,17 @@ public class OrderProductMap {
 		this.giftStatus = giftStatus;
 	}
 
-	public Product getProducts() {
+	public Product getProduct() {
 		return product;
 	}
 
-	public void setProducts(Product product) {
+	public void setProduct(Product product) {
 		this.product = product;
 	}
 
 	@Override
 	public String toString() {
 		return "OrderProductMap [id=" + id + ", orderId=" + orderId + ", productId=" + productId + ", productStatus="
-				+ productStatus + ", giftStatus=" + giftStatus + ", products=" + product + "]";
+				+ productStatus + ", giftStatus=" + giftStatus + ", product=" + product + "]";
 	}
 }

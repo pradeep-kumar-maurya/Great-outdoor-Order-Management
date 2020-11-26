@@ -22,4 +22,7 @@ public interface OrdersRepository extends JpaRepository<Orders, Integer>{
 	@Query("delete from Orders orders where orders.orderId=?1")
 	public void deleteByOrderId(String orderId);
 
+	@Query("select orders from Orders orders where orders.orderId=?1")
+	public Orders getOrderByOrderId(String orderId);
+
 }
