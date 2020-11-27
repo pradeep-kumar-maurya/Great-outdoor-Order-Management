@@ -19,4 +19,6 @@ public interface IOrderService {
 
 	String removeProduct(String productId) throws ProductException;
 
+	Orders findOrdersByOrderId(String orderId) throws OrderException;
+
 }

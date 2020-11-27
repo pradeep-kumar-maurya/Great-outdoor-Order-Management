@@ -22,13 +22,12 @@ import com.capgemini.go.utility.Result;
 
 @RestController
 @RequestMapping("/order")
-//@CrossOrigin("*")
 public class OrderController {
 
 	@Autowired
 	private IOrderService service;
 
-	// creating new order by passing Orders parameters
+	//creating new order by passing Orders parameters
 	@PostMapping("/addOrder")
 	public ResponseEntity<Result> createNewOrder(@RequestBody Orders orders) throws OrderException {
 		String orderId = service.createNewOrder(orders);
@@ -37,18 +36,26 @@ public class OrderController {
 
 	//the details of the order are fetched according to the userId
 	@GetMapping("/getOrders/{userId}")
-	public ResponseEntity<List<Orders>> getOrders(@PathVariable("userId") String userId) throws OrderException {
+	public ResponseEntity<List<Orders>> getOrdersByUserId(@PathVariable("userId") String userId) throws OrderException {
 		List<Orders> orders = service.findOrdersByUserId(userId);
 		return new ResponseEntity<>(orders,HttpStatus.OK);
 	}
-
-	//The order gets deleted by providing the orderId
+	
+	//the particular order details are fetched according to the orderId
+	@GetMapping("/getOrders/orderId/{orderId}")
+	public ResponseEntity<Orders> getOrdersByOrderId(@PathVariable("orderId") String orderId) throws OrderException {
+		Orders orders = service.findOrdersByOrderId(orderId);
+		return new ResponseEntity<>(orders,HttpStatus.OK);
+	}
+	
+	//the order gets deleted by providing the orderId
 	@DeleteMapping("/deleteOrder/{orderId}")
 	public ResponseEntity<String> removeOrder(@PathVariable("orderId") String orderId) throws OrderException {
 		String string = service.cancelOrder(orderId);
 		return new ResponseEntity<>(string, HttpStatus.OK);
 	}
 	
+	//deleting a product from order by providing the productId
 	@DeleteMapping("/deleteProductFromOrder/{productId}")
 	public ResponseEntity<String> removeProduct(@PathVariable("productId") String productId) throws ProductException{
 		String string = service.removeProduct(productId);

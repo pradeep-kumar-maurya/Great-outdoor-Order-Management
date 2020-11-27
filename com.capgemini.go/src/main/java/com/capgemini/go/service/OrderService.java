@@ -73,8 +73,8 @@ public class OrderService implements IOrderService{
 				}
 				orders.setProducts(orderProductMapList);
 				ordersRepository.save(orders);
-				return "order placed successfully";
-				//return orderId;
+				//return "order placed successfully";
+				return orderId;
 			}
 			else {
 				throw new OrderException("valid userId needed or zero items in the cart...!!!");
@@ -89,12 +89,13 @@ public class OrderService implements IOrderService{
 	 * Function Name : findOrdersByUserId 
 	 * Input Parameters :  userId
 	 * Return Type : List<Orders>
-	 * Description : to show the list of orders according to user
+	 * Description : to show the list of orders
 	 */
 
 	@Override
 	public List<Orders> findOrdersByUserId(String userId) throws OrderException{
-		List<Orders> orders = new ArrayList<>();
+
+		List<Orders> orders;
 
 		//Validating userId
 		if(userId == null || userId.isEmpty()) {
@@ -116,6 +117,40 @@ public class OrderService implements IOrderService{
 				}
 				return orders;
 			}
+		}
+	}
+
+	
+	/*
+	 * Function Name : findOrdersByOrderId 
+	 * Input Parameters :  orderId
+	 * Return Type : Orders
+	 * Description : to show particular order details
+	 */
+	
+	@Override
+	public Orders findOrdersByOrderId(String orderId) throws OrderException {
+
+		Orders order;
+
+		//Validating userId
+		if(orderId == null || orderId.isEmpty()) {
+			throw new OrderException("valid orderId needed..!!");
+		}
+		else {
+			order = ordersRepository.getOrderByOrderId(orderId);
+			if(order == null) {
+				throw new OrderException("valid userId needed..!!");
+			}
+			else {
+				List<OrderProductMap> products = orderProductMapRepository.getOrderProductMapByOrderId(order.getOrderId());
+				for(OrderProductMap map : products) {
+					Product product = productRepository.getProductByProductId(map.getProductId());
+					map.setProduct(product);
+				}
+				order.setProducts(products);
+			}
+			return order;
 		}
 	}
 
