@@ -133,14 +133,14 @@ public class OrderService implements IOrderService{
 
 		Orders order;
 
-		//Validating userId
+		//Validating orderId
 		if(orderId == null || orderId.isEmpty()) {
 			throw new OrderException("valid orderId needed..!!");
 		}
 		else {
 			order = ordersRepository.getOrderByOrderId(orderId);
 			if(order == null) {
-				throw new OrderException("valid userId needed..!!");
+				throw new OrderException("valid orderId needed..!!");
 			}
 			else {
 				List<OrderProductMap> products = orderProductMapRepository.getOrderProductMapByOrderId(order.getOrderId());
