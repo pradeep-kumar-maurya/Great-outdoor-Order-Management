@@ -2,21 +2,26 @@ package com.capgemini.go.utility;
 
 public class Result {
 	
-	private final String response;
+	private final String orderId;
 	private final String status;
+	private final String orderDispatchStatus;
 	
-	public Result(String response, String status) {
+	public Result(String orderId, String status, String orderDispatchStatus) {
 		super();
-		this.response = response;
+		this.orderId = orderId;
 		this.status = status;
+		this.orderDispatchStatus = orderDispatchStatus;
 	}
 
-	public String getResponse() {
-		return response;
+	public String getOrderId() {
+		return orderId;
 	}
 
 	public String getStatus() {
 		return status;
 	}
-	
+
+	public String getOrderDispatchStatus() {
+		return orderDispatchStatus;
+	}
 }

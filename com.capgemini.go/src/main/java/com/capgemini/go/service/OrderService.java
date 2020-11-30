@@ -14,11 +14,13 @@ import com.capgemini.go.dao.CartRepository;
 import com.capgemini.go.dao.CustomerRepository;
 import com.capgemini.go.dao.OrderProductMapRepository;
 import com.capgemini.go.dao.OrdersRepository;
+import com.capgemini.go.dao.ProductDtoRepository;
 import com.capgemini.go.dao.ProductRepository;
 import com.capgemini.go.dto.Cart;
 import com.capgemini.go.dto.OrderProductMap;
 import com.capgemini.go.dto.Orders;
 import com.capgemini.go.dto.Product;
+import com.capgemini.go.dto.ProductDto;
 import com.capgemini.go.exceptions.OrderException;
 import com.capgemini.go.exceptions.ProductException;
 
@@ -36,6 +38,8 @@ public class OrderService implements IOrderService{
 	private OrdersRepository ordersRepository;
 	@Autowired
 	private ProductRepository productRepository;
+	@Autowired
+	private ProductDtoRepository productDtoRepository;
 
 
 	/*
@@ -47,11 +51,10 @@ public class OrderService implements IOrderService{
 
 	@Override
 	public String createNewOrder(Orders orders) throws OrderException {
-		System.out.println("in orders");
 		if(validateOrder(orders)) {
 			String orderId = UUID.randomUUID().toString();
 			orders.setOrderId(orderId);
-			orders.setOrderDispatchStatus("accepted");
+			orders.setOrderDispatchStatus("not yet dispatched");
 			Calendar c = Calendar.getInstance();
 			orders.setOrderInitiateTime(c.getTime());
 			c.add(Calendar.DATE, 2);
@@ -59,21 +62,38 @@ public class OrderService implements IOrderService{
 			List<Cart> products = cartRepository.getProductsByUserId(orders.getUserId());
 			if(!products.isEmpty()) {
 				List<OrderProductMap> orderProductMapList = new ArrayList<>();
+				Product product = new Product();
 				for(Cart cart : products) {
 					OrderProductMap map = new OrderProductMap();
-					Product product = productRepository.getProductByProductId(cart.getProductId());
-					map.setOrderId(orderId);
-					map.setProductId(cart.getProductId());
-					map.setProductStatus(0);
-					map.setGiftStatus(0);
-					map.setProduct(product);
-					orderProductMapRepository.save(map);
-					orderProductMapList.add(map);
-					//cartRepository.deleteByUserIdAndProductId(orders.getUserId(),cart.getProductId());
+					ProductDto productDto = productDtoRepository.getProductByProductId(cart.getProductId());
+
+					if(productDto != null) {
+						//adding product details to Product table
+
+						product.setProductId(productDto.getProductId());
+						product.setProductName(productDto.getProductName());
+						product.setQuantity(cart.getQuantity());
+						product.setProductPrice(productDto.getPrice());
+						product.setOrderId(orderId);
+						productRepository.save(product);
+
+						//setting data in the OrderProductMap table
+
+						map.setOrderId(orderId);
+						map.setProductId(cart.getProductId());
+						map.setProductStatus(0);
+						map.setGiftStatus(0);
+						map.setProduct(product);
+						orderProductMapRepository.save(map);
+						orderProductMapList.add(map);
+						//cartRepository.deleteByUserIdAndProductId(orders.getUserId(),cart.getProductId());
+					}
+					else {
+						throw new OrderException("no such product found with product Id : "+cart.getProductId());
+					}
 				}
 				orders.setProducts(orderProductMapList);
 				ordersRepository.save(orders);
-				//return "order placed successfully";
 				return orderId;
 			}
 			else {
@@ -120,27 +140,28 @@ public class OrderService implements IOrderService{
 		}
 	}
 
-	
+
 	/*
 	 * Function Name : findOrdersByOrderId 
 	 * Input Parameters :  orderId
 	 * Return Type : Orders
 	 * Description : to show particular order details
 	 */
-	
+
 	@Override
 	public Orders findOrdersByOrderId(String orderId) throws OrderException {
 
 		Orders order;
 
+		String error = "valid orderId needed..!!";
 		//Validating orderId
 		if(orderId == null || orderId.isEmpty()) {
-			throw new OrderException("valid orderId needed..!!");
+			throw new OrderException(error);
 		}
 		else {
 			order = ordersRepository.getOrderByOrderId(orderId);
 			if(order == null) {
-				throw new OrderException("valid orderId needed..!!");
+				throw new OrderException(orderId + " : invalid Order Id \n"+ error);
 			}
 			else {
 				List<OrderProductMap> products = orderProductMapRepository.getOrderProductMapByOrderId(order.getOrderId());
@@ -171,10 +192,14 @@ public class OrderService implements IOrderService{
 			if(order == null) {
 				throw new OrderException("valid orderId needed..!!");
 			}
-			else {
+			else if(order.getOrderDispatchStatus().equals("not yet dispatched")) {
 				ordersRepository.deleteByOrderId(orderId);
 				orderProductMapRepository.deleteByOrderId(orderId);
+				productRepository.deleteByOrderId(orderId);
 				return "order was deleted successfully";
+			}
+			else {
+				throw new OrderException("order has already been dispatched and cannot be cancelled...!!!");
 			} 
 		}
 	}
@@ -202,10 +227,12 @@ public class OrderService implements IOrderService{
 					if(mapList.size() == 1) {
 						orderProductMapRepository.deleteProductByProductId(productId);
 						ordersRepository.deleteByOrderId(map.getOrderId());
+						productRepository.deleteByOrderId(map.getOrderId());
 						return "product was removed successfully, order cancelled..!!";
 					}
 					else {
 						orderProductMapRepository.deleteProductByProductId(productId);
+						productRepository.deleteProductByProductId(productId);
 						return "product was removed successfully..!!";
 					}
 				}
@@ -241,13 +268,13 @@ public class OrderService implements IOrderService{
 	 */
 	@Override
 	public List<Cart> addItemToCart(Cart cart) {
-		Product product = productRepository.getProductByProductId(cart.getProductId());
-		cart.setProduct(product);
+		ProductDto productDto = productDtoRepository.getProductByProductId(cart.getProductId());
+		cart.setProductDto(productDto);
 		cartRepository.save(cart);
 		List<Cart> cartList = cartRepository.getCartListByUserId(cart.getUserId());
 		for(Cart c : cartList) {
-			Product p = productRepository.getProductByProductId(c.getProductId());
-			c.setProduct(p);
+			ProductDto pDto = productDtoRepository.getProductByProductId(c.getProductId());
+			c.setProductDto(pDto);
 		}
 		return cartList;
 	}
