@@ -86,7 +86,7 @@ public class OrderService implements IOrderService{
 						map.setProduct(product);
 						orderProductMapRepository.save(map);
 						orderProductMapList.add(map);
-						cartRepository.deleteByUserIdAndProductId(orders.getUserId(),cart.getProductId());
+						//cartRepository.deleteByUserIdAndProductId(orders.getUserId(),cart.getProductId());
 					}
 					else {
 						throw new OrderException("no such product found with product Id : "+cart.getProductId());
