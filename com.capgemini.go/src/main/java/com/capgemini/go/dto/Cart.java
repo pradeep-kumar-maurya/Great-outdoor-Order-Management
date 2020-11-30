@@ -20,21 +20,20 @@ public class Cart {
 	private String productId;
 	private int quantity;
 	@Transient
-	private Product product;
+	private ProductDto productDto;
 	
 	public Cart() {
 		super();
 	}
 
-	public Cart(long id, String userId, String productId, int quantity, Product product) {
+	public Cart(long id, String userId, String productId, int quantity, ProductDto productDto) {
 		super();
 		this.id = id;
 		this.userId = userId;
 		this.productId = productId;
 		this.quantity = quantity;
-		this.product = product;
+		this.productDto = productDto;
 	}
-
 
 
 	public long getId() {
@@ -69,17 +68,17 @@ public class Cart {
 		this.quantity = quantity;
 	}
 
-	public Product getProduct() {
-		return product;
+	public ProductDto getProductDto() {
+		return productDto;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setProductDto(ProductDto productDto) {
+		this.productDto = productDto;
 	}
 
 	@Override
 	public String toString() {
 		return "Cart [id=" + id + ", userId=" + userId + ", productId=" + productId + ", quantity=" + quantity
-				+ ", product=" + product + "]";
+				+ ", productDto=" + productDto + "]";
 	}
 }

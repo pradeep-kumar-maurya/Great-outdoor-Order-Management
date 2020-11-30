@@ -12,17 +12,20 @@ public class Product {
 	private String productId;
 	private String productName;
 	private String productPrice;
-	//private 
-	
+	private int quantity;
+	private String orderId;
+
 	public Product() {
 		super();
 	}
 
-	public Product(String productId, String productName, String productPrice) {
+	public Product(String productId, String productName, String productPrice, int quantity, String orderId) {
 		super();
 		this.productId = productId;
 		this.productName = productName;
 		this.productPrice = productPrice;
+		this.quantity = quantity;
+		this.orderId = orderId;
 	}
 
 	public String getProductId() {
@@ -49,10 +52,25 @@ public class Product {
 		this.productPrice = productPrice;
 	}
 
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
 	@Override
 	public String toString() {
 		return "Product [productId=" + productId + ", productName=" + productName + ", productPrice=" + productPrice
-				+ "]";
-	}
-	
+				+ ", quantity=" + quantity + ", orderId=" + orderId + "]";
+	}	
 }

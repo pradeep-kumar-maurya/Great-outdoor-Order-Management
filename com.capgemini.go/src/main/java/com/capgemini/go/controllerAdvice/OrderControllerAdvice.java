@@ -13,11 +13,11 @@ public class OrderControllerAdvice {
 	
 	@ExceptionHandler()
 	public ResponseEntity<String> invalidUserId(OrderException exception){
-		return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 	
 	@ExceptionHandler()
 	public ResponseEntity<String> invalidProductId(ProductException exception){
-		return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 }
