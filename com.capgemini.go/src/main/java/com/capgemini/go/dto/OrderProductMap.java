@@ -1,5 +1,6 @@
 package com.capgemini.go.dto;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,9 +17,13 @@ public class OrderProductMap {
 	@SequenceGenerator(name="orderProductMapSeq", initialValue=30000, allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="orderProductMapSeq")
 	private long id;
+	@Column(length = 40)
 	private String orderId;
+	@Column(length = 15)
 	private String productId;
+	@Column(length = 1)
 	private int productStatus;
+	@Column(length = 1)
 	private int giftStatus;
 	@Transient
 	private Product product;

@@ -1,5 +1,6 @@
 package com.capgemini.go.dto;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,19 +14,29 @@ public class Customer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
+	@Column(length = 10)
 	private String userId;
+	@Column(length = 20)
 	private String username;
+	@Column(length = 15)
+	private String password;
+	@Column(length = 10)
+	private String addressId;
 	
 	public Customer() {
 		super();
 	}
 
-	public Customer(long id, String userId, String username) {
+	public Customer(long id, String userId, String username, String password, String addressId) {
 		super();
 		this.id = id;
 		this.userId = userId;
 		this.username = username;
+		this.password = password;
+		this.addressId = addressId;
 	}
+
+
 
 	public long getId() {
 		return id;
@@ -51,8 +62,25 @@ public class Customer {
 		this.username = username;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getAddressId() {
+		return addressId;
+	}
+
+	public void setAddressId(String addressId) {
+		this.addressId = addressId;
+	}
+
 	@Override
 	public String toString() {
-		return "Customer [id=" + id + ", userId=" + userId + ", username=" + username + "]";
-	}
+		return "Customer [id=" + id + ", userId=" + userId + ", username=" + username + ", password=" + password
+				+ ", addressId=" + addressId + "]";
+	}	
 }

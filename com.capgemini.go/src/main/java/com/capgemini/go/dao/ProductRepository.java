@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.capgemini.go.dto.Product;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, String>{
+public interface ProductRepository extends JpaRepository<Product, Integer>{
 
 	@Query("select product from Product product where product.productId=?1")
 	public Product getProductByProductId(String productId);

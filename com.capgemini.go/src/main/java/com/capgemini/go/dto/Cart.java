@@ -1,5 +1,6 @@
 package com.capgemini.go.dto;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,8 +17,11 @@ public class Cart {
 	@SequenceGenerator(name="cartSeq", initialValue=20000, allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="cartSeq")
 	private long id;
+	@Column(length = 15)
 	private String userId;
+	@Column(length = 15)
 	private String productId;
+	@Column(length = 2)
 	private int quantity;
 	@Transient
 	private ProductDto productDto;
