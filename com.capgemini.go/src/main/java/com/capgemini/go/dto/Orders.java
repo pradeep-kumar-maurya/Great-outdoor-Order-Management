@@ -3,6 +3,7 @@ package com.capgemini.go.dto;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,12 +22,18 @@ public class Orders {
 	@SequenceGenerator(name="ordersSeq", initialValue=40000, allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ordersSeq")
 	private long id;
+	@Column(length = 40)
     private String orderId;
+	@Column(length = 15)
     private String userId;
+	@Column(length = 15)
     private String addressId;
+	@Column(length = 20)
     private String orderDispatchStatus;
+	@Column(length = 20)
     @Temporal(TemporalType.DATE)
     private Date orderInitiateTime;
+	@Column(length = 20)
     @Temporal(TemporalType.DATE)
     private Date orderDispatchTime;
     @Transient

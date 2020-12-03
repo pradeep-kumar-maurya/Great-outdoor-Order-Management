@@ -1,6 +1,5 @@
 package com.capgemini.go.dto;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,89 +7,77 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Product")
-public class Product {
+@Table(name = "CartDto")
+public class CartDto {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	@Column(length = 15)
-	private String productId;
-	@Column(length = 20)
 	private String productName;
-	@Column(length = 10)
 	private String productPrice;
-	@Column(length = 2)
 	private int quantity;
-	@Column(length = 40)
-	private String orderId;
+	private String userId;
+	private String productId;
+	private String addressId;
 
-	public Product() {
+	public CartDto() {
 		super();
 	}
-
-	public Product(int id, String productId, String productName, String productPrice, int quantity, String orderId) {
+	
+	public CartDto(int id, String productName, String productPrice, int quantity, String userId, String productId,
+			String addressId) {
 		super();
 		this.id = id;
-		this.productId = productId;
 		this.productName = productName;
 		this.productPrice = productPrice;
 		this.quantity = quantity;
-		this.orderId = orderId;
+		this.userId = userId;
+		this.productId = productId;
+		this.addressId = addressId;
 	}
-
 	
 	public int getId() {
 		return id;
 	}
-
 	public void setId(int id) {
 		this.id = id;
 	}
-
-	public String getProductId() {
-		return productId;
-	}
-
-	public void setProductId(String productId) {
-		this.productId = productId;
-	}
-
 	public String getProductName() {
 		return productName;
 	}
-
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
-
 	public String getProductPrice() {
 		return productPrice;
 	}
-
 	public void setProductPrice(String productPrice) {
 		this.productPrice = productPrice;
 	}
-
 	public int getQuantity() {
 		return quantity;
 	}
-
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-
-	public String getOrderId() {
-		return orderId;
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public String getProductId() {
+		return productId;
+	}
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
+	public String getAddressId() {
+		return addressId;
+	}
+	public void setAddressId(String addressId) {
+		this.addressId = addressId;
 	}
 
-	public void setOrderId(String orderId) {
-		this.orderId = orderId;
-	}
-
-	@Override
-	public String toString() {
-		return "Product [productId=" + productId + ", productName=" + productName + ", productPrice=" + productPrice
-				+ ", quantity=" + quantity + ", orderId=" + orderId + "]";
-	}	
 }
+
