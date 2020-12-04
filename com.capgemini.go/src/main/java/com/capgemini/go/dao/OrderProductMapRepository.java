@@ -30,4 +30,7 @@ public interface OrderProductMapRepository extends JpaRepository<OrderProductMap
 	@Query("delete from OrderProductMap orderProductMap where orderProductMap.productId=?1")
 	public void deleteProductByProductId(String productId);
 
+	@Query("select orderProductMap from OrderProductMap orderProductMap where orderProductMap.orderId=?1")
+	public OrderProductMap getProductByOrderId(String orderId);
+
 }

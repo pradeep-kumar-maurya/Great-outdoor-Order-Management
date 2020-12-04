@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.capgemini.go.controller.OrderController;
+import com.capgemini.go.dto.CartDto;
 import com.capgemini.go.dto.Orders;
 import com.capgemini.go.service.IOrderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,10 +30,10 @@ class OrderApplicationHttpStatusCodeTests {
 	private IOrderService service;
 
 	@Test
-	void addOrder() throws Exception {
-		Orders orders = new Orders();
-		when(service.createNewOrder(orders)).thenReturn("");
-		mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:4545/order/addOrder",orders).contentType("application/json").content(new ObjectMapper().writeValueAsString(orders))).andDo(print()).andExpect(status().isOk());
+	void createNewOrder() throws Exception {
+		CartDto cartDto = new CartDto();
+		when(service.createNewOrder(cartDto)).thenReturn("");
+		mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:4545/order/addOrder",cartDto).contentType("application/json").content(new ObjectMapper().writeValueAsString(cartDto))).andDo(print()).andExpect(status().isOk());
 	}
 	
 	@Test

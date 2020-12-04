@@ -12,7 +12,7 @@ import com.capgemini.go.exceptions.ProductException;
 
 public interface IOrderService {
 
-	String createNewOrder(Orders orders) throws OrderException;
+	String createNewOrder(CartDto cartDto) throws OrderException;
 
 	List<Orders> findOrdersByUserId(String userId) throws OrderException;
 

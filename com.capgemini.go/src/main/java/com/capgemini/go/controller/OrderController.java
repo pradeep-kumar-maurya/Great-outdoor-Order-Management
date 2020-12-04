@@ -47,9 +47,9 @@ public class OrderController {
 	}
 
 	//creating new order by passing Orders parameters
-	@PostMapping("/addOrder")
-	public ResponseEntity<Result> createNewOrder(@RequestBody Orders orders) throws OrderException {
-		String orderId = service.createNewOrder(orders);
+	@PostMapping("/placeOrder")
+	public ResponseEntity<Result> createNewOrder(@RequestBody CartDto cartDto) throws OrderException {
+		String orderId = service.createNewOrder(cartDto);
 		return new ResponseEntity<>(new Result(orderId, "accepted","not yet dispatched"), HttpStatus.OK);
 	}
 
