@@ -3,6 +3,7 @@ package com.capgemini.go.tests;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.capgemini.go.dto.CartDto;
 import com.capgemini.go.dto.Orders;
 import com.capgemini.go.exceptions.OrderException;
 import com.capgemini.go.exceptions.ProductException;
@@ -22,60 +24,74 @@ class OrderApplicationTests {
 
 	@Autowired
 	private IOrderService service;
-
 	
 	/*
-	 * Test : adding Order
-	 * Input parameters : Order
+	 * Test : placing Order
+	 * Input parameters : CartDto
 	 * Details : Valid 
 	 */
 	
+	@Disabled
 	@Test
 	@Order(1)
-	void addOrder_1() throws OrderException {
-		Orders orders = new Orders();
-		orders.setId(40001);
-		orders.setUserId("999-a1");
-		orders.setAddressId("1211a");
-		String string1 = service.createNewOrder(orders);
+	void createNewOrder_1() throws OrderException {
+		CartDto cartDto = new CartDto();
+		cartDto.setId(1);
+		cartDto.setAddressId("1024-TS");
+		cartDto.setProductId("546-edf");
+		cartDto.setUserId("prad1024");
+		cartDto.setQuantity(1);
+		cartDto.setProductName("Apple Imac");
+		cartDto.setProductPrice("200000");
+		String string1 = service.createNewOrder(cartDto);
 		String string2 = "order placed successfully";
 		Assertions.assertEquals(string1, string2);
 	}
 
 	
 	/*
-	 * Test : adding Order
-	 * Input parameters : Order
+	 * Test : placing Order
+	 * Input parameters : CartDto
 	 * Details : Invalid(userId = "") 
 	 */
 	
+	//@Disabled
 	@Test
 	@Order(2)
-	void addOrder_2() throws OrderException {
-		Orders orders = new Orders();
-		orders.setId(40001);
-		orders.setUserId("");
-		orders.setAddressId("1211a");
-		String string1 = service.createNewOrder(orders);
+	void createNewOrder_2() throws OrderException {
+		CartDto cartDto = new CartDto();
+		cartDto.setId(1);
+		cartDto.setAddressId("1024-TS");
+		cartDto.setProductId("546-edf");
+		cartDto.setUserId("");
+		cartDto.setQuantity(1);
+		cartDto.setProductName("Apple Imac");
+		cartDto.setProductPrice("200000");
+		String string1 = service.createNewOrder(cartDto);
 		String string2 = "order placed successfully";
 		Assertions.assertEquals(string1, string2);
 	}
 
 	
 	/*
-	 * Test : adding Order
-	 * Input parameters : Order
+	 * Test : placing Order
+	 * Input parameters : cartDto
 	 * Details : Invalid(userId = null) 
 	 */
 	
+	//@Disabled
 	@Test
 	@Order(3)
-	void addOrder_3() throws OrderException {
-		Orders orders = new Orders();
-		orders.setId(40001);
-		orders.setUserId(null);
-		orders.setAddressId("1211a");
-		String string1 = service.createNewOrder(orders);
+	void createNewOrder_3() throws OrderException {
+		CartDto cartDto = new CartDto();
+		cartDto.setId(1);
+		cartDto.setAddressId("1024-TS");
+		cartDto.setProductId("546-edf");
+		cartDto.setUserId(null);
+		cartDto.setQuantity(1);
+		cartDto.setProductName("Apple Imac");
+		cartDto.setProductPrice("200000");
+		String string1 = service.createNewOrder(cartDto);
 		String string2 = "order placed successfully";
 		Assertions.assertEquals(string1, string2);
 	}
@@ -87,10 +103,11 @@ class OrderApplicationTests {
 	 * Details : Valid
 	 */
 	
+	//@Disabled
 	@Test
 	@Order(4)
 	void findOrdersByUserId_1() throws OrderException {
-		List<Orders> orders = service.findOrdersByUserId("999-a1");
+		List<Orders> orders = service.findOrdersByUserId("prad1024");
 		Assertions.assertEquals(1, orders.size());
 	}
 	
@@ -101,10 +118,11 @@ class OrderApplicationTests {
 	 * Details : Invalid(userId = "999") 
 	 */
 	
+	//@Disabled
 	@Test
 	@Order(5)
 	void findOrdersByUserId_2() throws OrderException {
-		List<Orders> orders = service.findOrdersByUserId("999");
+		List<Orders> orders = service.findOrdersByUserId("prd102");
 		Assertions.assertEquals(1, orders.size());
 	}
 	
@@ -114,6 +132,7 @@ class OrderApplicationTests {
 	 * Details : Invalid(userId = "") 
 	 */
 	
+	//@Disabled
 	@Test
 	@Order(6)
 	void findOrdersByUserId_3() throws OrderException {
@@ -128,6 +147,7 @@ class OrderApplicationTests {
 	 * Details : Invalid(userId = null) 
 	 */
 	
+	//@Disabled
 	@Test
 	@Order(7)
 	void findOrdersByUserId_4() throws OrderException {
@@ -142,6 +162,7 @@ class OrderApplicationTests {
 	 * Details : Valid
 	 */
 	
+	//@Disabled
 	@Test
 	@Order(8)
 	void cancelOrder_1() throws OrderException {
@@ -157,6 +178,7 @@ class OrderApplicationTests {
 	 * Details : Invalid(orderId = "a9c85db5-b05")
 	 */
 	
+	//@Disabled
 	@Test
 	@Order(9)
 	void cancelOrder_2() throws OrderException {
@@ -172,6 +194,7 @@ class OrderApplicationTests {
 	 * Details : Invalid(orderId = "")
 	 */
 	
+	//@Disabled
 	@Test
 	@Order(10)
 	void cancelOrder_3() throws OrderException {
@@ -187,6 +210,7 @@ class OrderApplicationTests {
 	 * Details : Invalid(orderId = null)
 	 */
 	
+	//@Disabled
 	@Test
 	@Order(11)
 	void cancelOrder_4() throws OrderException {
@@ -202,6 +226,7 @@ class OrderApplicationTests {
 	 * Details : Valid
 	 */
 	
+	@Disabled
 	@Test
 	@Order(12)
 	void removeProduct_1() throws ProductException {
@@ -217,6 +242,7 @@ class OrderApplicationTests {
 	 * Details : Invalid(productId = "")
 	 */
 	
+	//@Disabled
 	@Test
 	@Order(13)
 	void removeProduct_2() throws ProductException {
@@ -232,6 +258,7 @@ class OrderApplicationTests {
 	 * Details : Invalid(productId = null)
 	 */
 	
+	//@Disabled
 	@Test
 	@Order(14)
 	void removeProduct_3() throws ProductException {
@@ -247,6 +274,7 @@ class OrderApplicationTests {
 	 * Details : Invalid(productId = "1234")
 	 */
 	
+	//@Disabled
 	@Test
 	@Order(15)
 	void removeProduct_4() throws ProductException {
