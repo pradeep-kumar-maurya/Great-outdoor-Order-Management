@@ -7,9 +7,12 @@ import java.util.UUID;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.capgemini.go.Application;
 import com.capgemini.go.dao.CartDtoRepository;
 import com.capgemini.go.dao.CartRepository;
 import com.capgemini.go.dao.CustomerRepository;
@@ -31,6 +34,8 @@ import com.capgemini.go.exceptions.ProductException;
 @Service
 @Transactional
 public class OrderService implements IOrderService{
+
+	Logger logger = LoggerFactory.getLogger(Application.class);
 
 	@Autowired
 	private CartRepository cartRepository;
@@ -55,6 +60,12 @@ public class OrderService implements IOrderService{
 	 */
 	@Override
 	public Customer getCustomer(String username, String password) throws CustomerException {
+		
+		logger.trace("A TRACE Message");
+        logger.debug("A DEBUG Message");
+        logger.info("An INFO Message");
+        logger.warn("A WARN Message");
+        logger.error("An ERROR Message");
 
 		if(username.isEmpty() || username == null)
 			throw new CustomerException("invalid username");
