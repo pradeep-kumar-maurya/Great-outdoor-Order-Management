@@ -1,8 +1,6 @@
-<<<<<<< HEAD
 package com.capgemini.go.controllerAdvice;
 
 import org.springframework.http.HttpStatus;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -29,35 +27,4 @@ public class OrderControllerAdvice {
 		return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 }
-=======
-package com.capgemini.go.controllerAdvice;
 
-import org.springframework.http.HttpStatus;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import com.capgemini.go.exceptions.CustomerException;
-import com.capgemini.go.exceptions.OrderException;
-import com.capgemini.go.exceptions.ProductException;
-
-@RestControllerAdvice
-public class OrderControllerAdvice {
-	
-	@ExceptionHandler()
-	public ResponseEntity<String> invalidUserId(OrderException exception){
-		return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
-	}
-	
-	@ExceptionHandler()
-	public ResponseEntity<String> invalidProductId(ProductException exception){
-		return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
-	}
-	
-	@ExceptionHandler()
-	public ResponseEntity<String> invalidCustomer(CustomerException exception){
-		return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
-	}
-}
->>>>>>> branch 'master' of https://github.com/pradeep-kumar-maurya/Great-outdoor-Order-Management.git
